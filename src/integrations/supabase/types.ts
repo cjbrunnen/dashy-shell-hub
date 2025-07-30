@@ -17,6 +17,7 @@ export type Database = {
       chatbots: {
         Row: {
           created_at: string
+          embed_code: string | null
           id: string
           name: string
           personality_style: string
@@ -28,6 +29,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          embed_code?: string | null
           id?: string
           name: string
           personality_style: string
@@ -39,6 +41,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          embed_code?: string | null
           id?: string
           name?: string
           personality_style?: string

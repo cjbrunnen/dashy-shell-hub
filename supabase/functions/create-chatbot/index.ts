@@ -57,7 +57,7 @@ serve(async (req) => {
 
     logStep("Creating chatbot", { name, personalityStyle, themeColor });
 
-    // Insert chatbot into database
+    // Insert chatbot into database first to get the ID
     const { data: chatbot, error: insertError } = await supabaseClient
       .from("chatbots")
       .insert({
@@ -74,6 +74,33 @@ serve(async (req) => {
     if (insertError) {
       logStep("Database error", { error: insertError });
       throw new Error(`Failed to create chatbot: ${insertError.message}`);
+    }
+
+    // Generate embed code using the chatbot ID
+    const embedCode = `<script>
+  (function() {
+    var chatbotId = '${chatbot.id}';
+    var script = document.createElement('script');
+    script.src = 'https://jzgaoyceskwebjyqqypz.supabase.co/functions/v1/chatbot-widget?id=' + chatbotId;
+    script.async = true;
+    script.onload = function() {
+      if (window.initChatbot) {
+        window.initChatbot(chatbotId);
+      }
+    };
+    document.head.appendChild(script);
+  })();
+</script>`;
+
+    // Update chatbot with embed code
+    const { error: updateError } = await supabaseClient
+      .from("chatbots")
+      .update({ embed_code: embedCode })
+      .eq("id", chatbot.id);
+
+    if (updateError) {
+      logStep("Database update error", { error: updateError });
+      throw new Error(`Failed to update chatbot with embed code: ${updateError.message}`);
     }
 
     logStep("Chatbot created successfully", { chatbotId: chatbot.id });

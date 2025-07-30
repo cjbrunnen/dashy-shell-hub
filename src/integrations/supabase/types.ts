@@ -14,7 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      chatbots: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          personality_style: string
+          resource_files: string[] | null
+          system_prompt: string
+          theme_color: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          personality_style: string
+          resource_files?: string[] | null
+          system_prompt: string
+          theme_color: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          personality_style?: string
+          resource_files?: string[] | null
+          system_prompt?: string
+          theme_color?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

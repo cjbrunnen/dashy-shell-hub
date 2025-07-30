@@ -1,4 +1,4 @@
-import { Home, Bot, BarChart3, Settings } from "lucide-react";
+import { Home, Bot, BarChart3, Settings, Crown } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
 import {
@@ -17,6 +17,7 @@ const items = [
   { title: "Home", url: "/", icon: Home },
   { title: "My Chatbots", url: "/chatbots", icon: Bot },
   { title: "Analytics", url: "/analytics", icon: BarChart3 },
+  { title: "Pricing", url: "/pricing", icon: Crown },
   { title: "Account Settings", url: "/settings", icon: Settings },
 ];
 

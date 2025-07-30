@@ -7,6 +7,7 @@ import { DashboardLayout } from "./components/layout/DashboardLayout";
 import Home from "./pages/Home";
 import Chatbots from "./pages/Chatbots";
 import Analytics from "./pages/Analytics";
+import Pricing from "./pages/Pricing";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -32,6 +33,11 @@ const App = () => (
           <Route path="/analytics" element={
             <DashboardLayout>
               <Analytics />
+            </DashboardLayout>
+          } />
+          <Route path="/pricing" element={
+            <DashboardLayout>
+              <Pricing />
             </DashboardLayout>
           } />
           <Route path="/settings" element={

@@ -1,69 +1,106 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Bot, Plus, TrendingUp, Users } from "lucide-react";
+import { UsageStats } from "@/components/ui/usage-stats";
+import { UpgradeModal } from "@/components/ui/upgrade-modal";
+import { Bot, Plus, TrendingUp, Users, Crown, MessageSquare } from "lucide-react";
 
 export default function Home() {
+  // Mock current user plan data
+  const currentPlan = {
+    name: "Free",
+    chatbots: { used: 1, limit: 1 },
+    chats: { used: 45, limit: 100 },
+    uploads: false,
+    apiAccess: false,
+  };
+
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Welcome back!</h1>
-        <p className="text-muted-foreground mt-2">
-          Here's an overview of your chatbot dashboard.
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-4xl font-bold bg-gradient-text bg-clip-text text-transparent">
+            Welcome back!
+          </h1>
+          <p className="text-lg text-muted-foreground mt-2">
+            Here's what's happening with your chatbots today.
+          </p>
+        </div>
+        <div className="flex gap-3">
+          {currentPlan.chatbots.used >= (currentPlan.chatbots.limit || 0) ? (
+            <UpgradeModal 
+              feature="Create New Chatbot"
+              currentPlan={currentPlan.name}
+              suggestedPlan="Starter"
+            >
+              <Button variant="outline" className="border-yellow-500 text-yellow-600 hover:bg-yellow-50">
+                <Crown className="mr-2 h-4 w-4" />
+                Upgrade to Create
+              </Button>
+            </UpgradeModal>
+          ) : (
+            <Button className="bg-gradient-primary hover:bg-gradient-primary/90 shadow-glow">
+              <Plus className="mr-2 h-4 w-4" />
+              Create New Bot
+            </Button>
+          )}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-card/50 backdrop-blur-sm border-border shadow-elegant-md hover:shadow-elegant-lg transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Chatbots</CardTitle>
-            <Bot className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-primary">12</div>
-            <p className="text-xs text-muted-foreground">
-              +2 from last month
-            </p>
-          </CardContent>
-        </Card>
+      {/* Usage Stats and Quick Stats */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-1">
+          <UsageStats plan={currentPlan} />
+        </div>
+        
+        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card className="hover:shadow-elegant transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Chatbots</CardTitle>
+              <Bot className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{currentPlan.chatbots.used}</div>
+              <p className="text-xs text-muted-foreground">
+                of {currentPlan.chatbots.limit || "unlimited"} allowed
+              </p>
+            </CardContent>
+          </Card>
 
-        <Card className="bg-card/50 backdrop-blur-sm border-border shadow-elegant-md hover:shadow-elegant-lg transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-primary">2,350</div>
-            <p className="text-xs text-muted-foreground">
-              +15% from last week
-            </p>
-          </CardContent>
-        </Card>
+          <Card className="hover:shadow-elegant transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Monthly Chats</CardTitle>
+              <MessageSquare className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{currentPlan.chats.used}</div>
+              <p className="text-xs text-muted-foreground">
+                of {currentPlan.chats.limit} this month
+              </p>
+            </CardContent>
+          </Card>
 
-        <Card className="bg-card/50 backdrop-blur-sm border-border shadow-elegant-md hover:shadow-elegant-lg transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Conversations</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-primary">18,420</div>
-            <p className="text-xs text-muted-foreground">
-              +7% from yesterday
-            </p>
-          </CardContent>
-        </Card>
+          <Card className="hover:shadow-elegant transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">23</div>
+              <p className="text-xs text-muted-foreground">+12% from last month</p>
+            </CardContent>
+          </Card>
 
-        <Card className="bg-card/50 backdrop-blur-sm border-border shadow-elegant-md hover:shadow-elegant-lg transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Response Time</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-primary">1.2s</div>
-            <p className="text-xs text-muted-foreground">
-              -0.3s from last hour
-            </p>
-          </CardContent>
-        </Card>
+          <Card className="hover:shadow-elegant transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Engagement Rate</CardTitle>
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">87.3%</div>
+              <p className="text-xs text-muted-foreground">+2.1% from last week</p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
